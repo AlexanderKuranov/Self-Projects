@@ -1,0 +1,61 @@
+import speedtest
+import os
+import time
+name_of_router= ["speed_test_2.4", "speed_test_5"]
+# os.system(f'''cmd /c "netsh wlan connect name={name_of_router[0]}"''')
+os.system(f'''nmcli dev wifi connect "{name_of_router[0]}" password ""''')
+time.sleep(10)
+s = speedtest.Speedtest()
+servers = s.get_best_server()
+download_2 = []
+upload_2 = []
+download_5 = []
+upload_5 = []
+print(servers)
+for i in range(5):
+    a = s.download(threads=None)
+    c = round(a/1048576)
+    b = s.upload(threads=None, pre_allocate=True)
+    d = round(b/1048576)
+    print("2.4# ",i+1," Download: ", a)
+    print("2.4# ",i+1," Upload: ", b)
+    download_2.append(c)
+    upload_2.append(d)
+print(download_2)
+print(upload_2)
+download_2.remove(max(download_2))
+download_2.remove(min(download_2))
+upload_2.remove(max(upload_2))
+upload_2.remove(min(upload_2))
+with open('/storage/self/primary/Android/media/speed_test.txt', 'w+') as f:
+    f.write(f'download_2.4\n')
+    for i in range(3):
+        f.write(f'{download_2[i]}\n')
+    f.write(f'upload_2.4\n')
+    for i in range(3):
+        f.write(f'{upload_2[i]}\n')
+# os.system(f'''cmd /c "netsh wlan connect name={name_of_router[1]}"''')
+os.system(f'''nmcli dev wifi connect "{name_of_router[1]}" password ""''')
+time.sleep(10)
+for i in range(5):
+    a = s.download(threads=None)
+    c = round(a/1048576)
+    b = s.upload(threads=None, pre_allocate=True)
+    d = round(b/1048576)
+    print("5# ",i+1," Download: ", a)
+    print("5# ",i+1," Upload: ", b)
+    download_5.append(c)
+    upload_5.append(d)
+print(download_5)
+print(upload_5)
+download_5.remove(max(download_5))
+download_5.remove(min(download_5))
+upload_5.remove(max(upload_5))
+upload_5.remove(min(upload_5))
+with open('/storage/self/primary/Android/media/speed_test.txt', 'a+') as f:
+    f.write(f'download_5\n')
+    for i in range(3):
+        f.write(f'{download_5[i]}\n')
+    f.write(f'upload_5\n')
+    for i in range(3):
+        f.write(f'{upload_5[i]}\n')
